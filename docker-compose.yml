@@ -1,0 +1,27 @@
+version: "3.8"
+
+services:
+  db:
+    container_name: addressbook-db
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: user
+      POSTGRES_DB: contacts
+    ports:
+      - 5432:5432
+    volumes:
+      - ./database/config/init:/docker-entrypoint-initdb.d/
+      - ./database/db:/var/lib/postgresql/data
+
+  adminer:
+    container_name: addressbook-adminer
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+
+volumes:
+  db:
+    driver: local
