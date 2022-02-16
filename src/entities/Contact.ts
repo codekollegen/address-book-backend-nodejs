@@ -1,6 +1,9 @@
-import { BaseEntity, Column, Entity, PrimaryColumn } from "typeorm";
+import { BaseEntity, Column, Entity, OneToMany, PrimaryColumn } from "typeorm";
+import { Address } from "./Address";
+import { Email } from "./Email";
+import { Phone } from "./Phone";
 
-@Entity("contacts")
+@Entity("contact")
 export class Contact extends BaseEntity {
   @PrimaryColumn()
   id!: string;
@@ -15,14 +18,14 @@ export class Contact extends BaseEntity {
   company?: string;
 
   @Column()
-  phones?: string;
-
-  @Column()
-  emails?: string;
-
-  @Column()
-  addresses?: string;
-
-  @Column()
   favorite!: boolean;
+
+  @OneToMany(() => Phone, (phone) => phone.contact)
+  phones?: Phone[];
+
+  @OneToMany(() => Email, (email) => email.contact)
+  emails?: Email[];
+
+  @OneToMany(() => Address, (address) => address.contact)
+  addresses?: Address[];
 }

@@ -16,7 +16,9 @@ export class ContactService {
   };
 
   public get = async (id: string) => {
-    const contact = await this.contactRepository.findOne(id);
+    const contact = await this.contactRepository.findOne(id, {
+      relations: ["phones"],
+    });
     return contact;
   };
 
