@@ -12,7 +12,7 @@ services:
     ports:
       - ${POSTGRES_PORT}:${POSTGRES_PORT}
     volumes:
-      - ./database/config/init:/docker-entrypoint-initdb.d/
+      # - ./database/config/init:/docker-entrypoint-initdb.d/
       - ./database/db:/var/lib/postgresql/data
 
   adminer:
