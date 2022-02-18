@@ -37,6 +37,11 @@ export class ContactService {
     const contact = await this.contactRepository.findOne(id);
 
     if (contact) {
+      /**
+       * Important to note:
+       * When phone numbers are "removed" via this update call, there foreign key
+       * in the database is simply set to NULL, but the entry stays.
+       */
       Object.assign(contact, data);
       const updatedContact = await this.contactRepository.save(contact);
       return updatedContact;
