@@ -1,19 +1,13 @@
-import { Connection, getConnection } from "typeorm";
-import { Address } from "../entities/Address";
+import { getConnection } from "typeorm";
 import { Contact } from "../entities/Contact";
-import { Email } from "../entities/Email";
-import { Phone } from "../entities/Phone";
 import { ContactRepository } from "../repositories/ContactRepository";
 
 export class ContactService {
   private contactRepository!: ContactRepository;
-  private connection!: Connection;
 
   constructor() {
     this.contactRepository =
       getConnection("contacts").getCustomRepository(ContactRepository);
-
-    this.connection = getConnection("contacts");
   }
 
   public getAll = async () => {
