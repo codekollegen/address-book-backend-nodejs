@@ -1,7 +1,6 @@
 import { Request, Response, Router } from "express";
 import { Contact } from "../entities/Contact";
 import { ContactService } from "../services/ContactService";
-// import { v4 as uuidv4 } from "uuid";
 import bodyParser from "body-parser";
 
 export class ContactController {
@@ -14,17 +13,32 @@ export class ContactController {
     this.initRoutes();
   }
 
+  /**
+   * Get all contacts without relations
+   * @param req
+   * @param res
+   */
   public getAll = async (req: Request, res: Response) => {
     const contacts = await this.contactService.getAll();
     res.send(contacts).json();
   };
 
+  /**
+   * Get a single contact with all the relations (phones, emails, addresses)
+   * @param req
+   * @param res
+   */
   public get = async (req: Request, res: Response) => {
     const id = req.params.id;
     const contact = await this.contactService.get(id);
     res.send(contact).json();
   };
 
+  /**
+   * Create a new contact including all relations
+   * @param req
+   * @param res
+   */
   public create = async (req: Request, res: Response) => {
     let contact = req.body as Contact;
     contact.id = this.generateId();

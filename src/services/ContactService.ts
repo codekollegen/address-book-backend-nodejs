@@ -1,13 +1,19 @@
-import { getConnection } from "typeorm";
+import { Connection, getConnection } from "typeorm";
+import { Address } from "../entities/Address";
 import { Contact } from "../entities/Contact";
+import { Email } from "../entities/Email";
+import { Phone } from "../entities/Phone";
 import { ContactRepository } from "../repositories/ContactRepository";
 
 export class ContactService {
   private contactRepository!: ContactRepository;
+  private connection!: Connection;
 
   constructor() {
     this.contactRepository =
       getConnection("contacts").getCustomRepository(ContactRepository);
+
+    this.connection = getConnection("contacts");
   }
 
   public getAll = async () => {
@@ -17,7 +23,7 @@ export class ContactService {
 
   public get = async (id: string) => {
     const contact = await this.contactRepository.findOne(id, {
-      relations: ["phones"],
+      relations: ["phones", "emails", "addresses"],
     });
     return contact;
   };
@@ -27,9 +33,16 @@ export class ContactService {
     return newContact;
   };
 
-  public update = async (contact: Contact, id: string) => {
-    const updatedContact = await this.contactRepository.update(id, contact);
-    return updatedContact;
+  public update = async (data: Contact, id: string) => {
+    const contact = await this.contactRepository.findOne(id);
+
+    if (contact) {
+      Object.assign(contact, data);
+      const updatedContact = await this.contactRepository.save(contact);
+      return updatedContact;
+    }
+
+    return {};
   };
 
   public delete = async (id: string) => {
