@@ -20,6 +20,7 @@ const main = async () => {
     database: process.env.POSTGRES_DB || "",
     entities: [Contact, Phone, Email, Address],
     name: "contacts",
+    synchronize: true,
   });
 
   const app = express();

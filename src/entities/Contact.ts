@@ -8,24 +8,24 @@ export class Contact extends BaseEntity {
   @PrimaryColumn()
   id!: string;
 
-  @Column()
+  @Column({ default: "" })
   firstname!: string;
 
-  @Column()
+  @Column({ default: "" })
   lastname!: string;
 
-  @Column()
+  @Column({ default: "" })
   company?: string;
 
-  @Column()
+  @Column({ default: false })
   favorite!: boolean;
 
-  @OneToMany(() => Phone, (phone) => phone.contact)
+  @OneToMany(() => Phone, (phone) => phone.contact, { cascade: true })
   phones?: Phone[];
 
-  @OneToMany(() => Email, (email) => email.contact)
+  @OneToMany(() => Email, (email) => email.contact, { cascade: true })
   emails?: Email[];
 
-  @OneToMany(() => Address, (address) => address.contact)
+  @OneToMany(() => Address, (address) => address.contact, { cascade: true })
   addresses?: Address[];
 }

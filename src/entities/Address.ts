@@ -1,9 +1,15 @@
-import { BaseEntity, Column, Entity, ManyToOne, PrimaryColumn } from "typeorm";
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from "typeorm";
 import { Contact } from "./Contact";
 
 @Entity("contact_address")
 export class Address extends BaseEntity {
-  @PrimaryColumn()
+  @PrimaryGeneratedColumn("increment")
   id!: number;
 
   @Column()
@@ -12,6 +18,9 @@ export class Address extends BaseEntity {
   @Column()
   value!: string;
 
-  @ManyToOne(() => Contact, (contact) => contact.addresses)
+  @ManyToOne(() => Contact, (contact) => contact.addresses, {
+    onDelete: "CASCADE",
+    onUpdate: "CASCADE",
+  })
   contact!: Contact;
 }
